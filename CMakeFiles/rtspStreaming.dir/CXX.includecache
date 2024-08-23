@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jetson/shd/C++_ws/RTSP_IO/rtspStreaming.cpp
+libavformat/avformat.h
+-
+libavutil/timestamp.h
+-
+iostream
+-
+thread
+-
+mutex
+-
+condition_variable
+-
+queue
+-
+
