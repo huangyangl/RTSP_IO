@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/rtspStreaming.dir/rtspStreaming.cpp.o  -o rtspStreaming   -L/usr/local/cuda/lib64  -Wl,-rpath,/usr/local/cuda/lib64 -lavformat -lavcodec -lavutil -lswscale 

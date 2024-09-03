@@ -38,7 +38,7 @@ void forward_stream(AVFormatContext* ifmt_ctx, AVFormatContext* ofmt_ctx) {
   
 int main(int argc, char **argv) {  
     char* _input_url = "rtsp://192.168.144.25:8554/main.264";
-    char* _output_url = "rtsp://127.0.0.1:554/live/a8";
+    char* _output_url = "rtmp://127.0.0.1:554/live/a8";
     if (argc >= 2) {
       for (int i = 1; i < argc; i++) {
         if (std::string(argv[i]) == "-i" && i + 1 < argc) {
@@ -58,7 +58,8 @@ int main(int argc, char **argv) {
             << "  -i <input_url>\n"
             << "     eg: -i rtsp://192.168.144.25:8554/main.264\n"
             << "  -o <output_url>\n"
-            << "     eg: -o rtsp://127.0.0.1:554/live/tt\n"
+            << "     eg: -o rtmp://127.0.0.1:554/live/test\n"
+            << "     eg: -o rtsp://127.0.0.1:554/live/test\n"
             << "  -h\n"
             << "      Print help message.\n"
             << std::endl;
@@ -88,11 +89,19 @@ int main(int argc, char **argv) {
             return 1;  
         }
         // 查找输出格式  
-        AVOutputFormat* out_fmt = av_guess_format("rtsp", NULL, NULL); 
+        //AVOutputFormat* out_fmt = av_guess_format("rtsp", NULL, NULL); 
         // 分配输出上下文
-        avformat_alloc_output_context2(&ofmt_ctx, nullptr, "rtsp", output_url);  
-        if (!ofmt_ctx) {  
-            std::cerr << "Failed to allocate output context\n";  
+        std::string output_url_str(_output_url); 
+        if(output_url_str.find("rtmp")!= std::string::npos)
+            avformat_alloc_output_context2(&ofmt_ctx, nullptr, "flv", output_url);
+        else if(output_url_str.find("rtsp")!= std::string::npos)
+            avformat_alloc_output_context2(&ofmt_ctx, nullptr, "rtsp", output_url);
+        else{
+            std::cout << "output_url invalid " << std::endl<< "See " << argv[0] << " -h" << std::endl; 
+            return -1; 
+        } 
+        if (!ofmt_ctx) {
+            std::cerr << "Failed to allocate output context\n";
             return -1;  
         }
         // 复制流（音频流、视频流）

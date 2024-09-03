@@ -207,3 +207,78 @@ void forward_stream(AVFormatContext* ifmt_ctx, AVFormatContext* ofmt_ctx) {
     av_write_trailer(ofmt_ctx);  
 }  
   
+
+  //20240902
+  extern "C" {  
+#include <libavformat/avformat.h>  
+#include <libavcodec/avcodec.h>  
+#include <libswscale/swscale.h>  
+#include <libavutil/imgutils.h>  
+}  
+  
+int main() {  
+    av_register_all();  
+  
+    AVFormatContext* pFormatCtx = nullptr;  
+    if (avformat_alloc_output_context2(&pFormatCtx, nullptr, "rtsp", "rtsp://your_server_ip:port/stream") < 0) {  
+        fprintf(stderr, "Could not create output context\n");  
+        return -1;  
+    }  
+  
+    // 设置输出格式参数（可选，根据需求配置）  
+    // 例如，设置视频流参数  
+    AVStream* video_stream = avformat_new_stream(pFormatCtx, nullptr);  
+    if (!video_stream) {  
+        fprintf(stderr, "Failed allocating output stream\n");  
+        return -1;  
+    }  
+  
+    AVCodec* codec = avcodec_find_encoder(AV_CODEC_ID_H264);  // 假设使用H.264编码  
+    if (!codec) {  
+        fprintf(stderr, "Codec not found\n");  
+        return -1;  
+    }  
+  
+    AVCodecContext* c = avcodec_alloc_context3(codec);  
+    if (!c) {  
+        fprintf(stderr, "Could not allocate video codec context\n");  
+        return -1;  
+    }  
+  
+    // 填充AVCodecContext参数...  
+    c->bit_rate = 400000;  
+    // 其他参数设置...  
+  
+    if (avcodec_open2(c, codec, nullptr) < 0) {  
+        fprintf(stderr, "Could not open codec\n");  
+        return -1;  
+    }  
+  
+    video_stream->codecpar->codec_id = c->codec_id;  
+    avcodec_parameters_from_context(video_stream->codecpar, c);  
+  
+    // 初始化URL协议  
+    if (!(pFormatCtx->oformat->flags & AVFMT_NOFILE)) {  
+        if (avio_open(&pFormatCtx->pb, pFormatCtx->url, AVIO_FLAG_WRITE) < 0) {  
+            fprintf(stderr, "Could not open output URL '%s'", pFormatCtx->url);  
+            return -1;  
+        }  
+    }  
+  
+    // 写入文件头  
+    if (avformat_write_header(pFormatCtx, nullptr) < 0) {  
+        fprintf(stderr, "Error occurred when opening output URL\n");  
+        return -1;  
+    }  
+  
+    // 这里添加你的视频帧编码和发送逻辑  
+  
+    // 写入文件尾  
+    av_write_trailer(pFormatCtx);  
+  
+    // 清理  
+    avcodec_free_context(&c);  
+    avformat_free_context(pFormatCtx);  
+  
+    return 0;  
+}

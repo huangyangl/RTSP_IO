@@ -1,0 +1,12 @@
+[
+{
+  "directory": "/home/jetson/shd/C++_ws/RTSP_IO/build",
+  "command": "/usr/bin/c++   -I/usr/include/opencv4  -g   -o CMakeFiles/streaming.dir/streaming.cpp.o -c /home/jetson/shd/C++_ws/RTSP_IO/streaming.cpp",
+  "file": "/home/jetson/shd/C++_ws/RTSP_IO/streaming.cpp"
+},
+{
+  "directory": "/home/jetson/shd/C++_ws/RTSP_IO/build",
+  "command": "/usr/bin/c++   -I/usr/include/opencv4 -isystem /usr/local/include/opencv4  -g   -o CMakeFiles/ifOpencvSupportFFmpeg.dir/ifOpencvSupportFFmpeg.cpp.o -c /home/jetson/shd/C++_ws/RTSP_IO/ifOpencvSupportFFmpeg.cpp",
+  "file": "/home/jetson/shd/C++_ws/RTSP_IO/ifOpencvSupportFFmpeg.cpp"
+}
+]

@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/streaming.dir/streaming.cpp.o  -o streaming   -L/usr/local/cuda-11.4/lib64  -Wl,-rpath,/usr/local/cuda-11.4/lib64 -lavformat -lavcodec -lavutil -lswscale 

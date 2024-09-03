@@ -18,11 +18,11 @@ target_include_directories(ifOpencvSupportFFmpeg PRIVATE /usr/include/opencv4/)
 # 链接OpenCV库  
 target_link_libraries(ifOpencvSupportFFmpeg ${OpenCV_LIBS})
 
-# rtspStreaming
+# streaming
 # 添加可执行文件 
-add_executable(rtspStreaming)
-target_sources(rtspStreaming PRIVATE rtspStreaming.cpp)
+add_executable(streaming)
+target_sources(streaming PRIVATE streaming.cpp)
 # 添加头文件
-target_include_directories(rtspStreaming PRIVATE /usr/include/opencv4/)
+target_include_directories(streaming PRIVATE /usr/include/opencv4/)
 # 链接OpenCV库  
-target_link_libraries(rtspStreaming ${FFMPEG_LIBRARIES})
+target_link_libraries(streaming ${FFMPEG_LIBRARIES})
